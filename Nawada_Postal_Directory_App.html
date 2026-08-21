@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Kiul RMS Sorting list finder</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -27,6 +27,7 @@
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Roboto, -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -41,20 +42,20 @@
         .top-nav {
             background-color: #2b2b2b;
             color: #ffffff;
-            font-size: 0.8rem;
-            padding: 5px 20px;
+            font-size: 0.78rem;
+            padding: 6px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 6px;
         }
 
         /* Header / Branding */
         header {
             background: linear-gradient(135deg, var(--dop-red) 0%, var(--dop-dark-red) 100%);
             color: white;
-            padding: 18px 24px;
+            padding: 16px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
             border-bottom: 5px solid var(--dop-yellow);
         }
@@ -66,58 +67,60 @@
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 12px;
         }
 
         .brand-title {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
         }
 
         .brand-title .logo-box {
             background: white;
             color: var(--dop-red);
-            width: 52px;
-            height: 52px;
+            width: 46px;
+            height: 46px;
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 26px;
+            font-size: 22px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.25);
+            flex-shrink: 0;
         }
 
         .brand-title h1 {
-            font-size: 1.55rem;
+            font-size: 1.3rem;
             font-weight: 800;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
+            line-height: 1.2;
         }
 
         .brand-title p {
-            font-size: 0.88rem;
+            font-size: 0.8rem;
             color: #fde4a9;
-            margin-top: 2px;
+            margin-top: 3px;
             font-weight: 500;
         }
 
         .division-tag {
             background-color: rgba(255, 255, 255, 0.18);
             border: 1px solid rgba(255, 255, 255, 0.35);
-            padding: 7px 16px;
+            padding: 6px 14px;
             border-radius: 20px;
-            font-size: 0.88rem;
+            font-size: 0.82rem;
             font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         /* Main Container */
         .container {
             max-width: 1200px;
-            margin: 20px auto;
-            padding: 0 15px;
+            margin: 16px auto;
+            padding: 0 12px;
             flex: 1;
             width: 100%;
         }
@@ -126,32 +129,33 @@
         .search-card {
             background: var(--card-bg);
             border-radius: 8px;
-            padding: 20px;
+            padding: 16px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.06);
             border-top: 4px solid var(--dop-red);
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         .search-box-wrapper {
             position: relative;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
         }
 
-        .search-box-wrapper i {
+        .search-box-wrapper .search-icon {
             position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
+            left: 14px;
             color: var(--text-muted);
-            font-size: 1.15rem;
+            font-size: 1.1rem;
+            pointer-events: none;
         }
 
         .search-input {
             width: 100%;
-            padding: 12px 16px 12px 46px;
-            font-size: 1.05rem;
+            padding: 13px 48px 13px 42px;
+            font-size: 1rem;
             border: 2px solid #ccc;
-            border-radius: 6px;
+            border-radius: 8px;
             outline: none;
             transition: all 0.2s;
         }
@@ -161,21 +165,53 @@
             box-shadow: 0 0 0 3px rgba(196, 18, 47, 0.15);
         }
 
+        .voice-btn {
+            position: absolute;
+            right: 8px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.25rem;
+            cursor: pointer;
+            padding: 8px 10px;
+            border-radius: 50%;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .voice-btn:hover, .voice-btn:active {
+            color: var(--dop-red);
+            background: #f1f3f5;
+        }
+
+        .voice-btn.listening {
+            color: var(--dop-red);
+            animation: pulse-mic 1s infinite alternate;
+        }
+
+        @keyframes pulse-mic {
+            from { transform: scale(1); opacity: 1; }
+            to { transform: scale(1.25); opacity: 0.6; }
+        }
+
         .filters-row {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             flex-wrap: wrap;
             align-items: center;
         }
 
         .filter-select {
-            padding: 9px 12px;
+            padding: 10px 12px;
             border-radius: 6px;
             border: 1px solid var(--border-color);
             background-color: white;
             font-size: 0.9rem;
             color: var(--text-dark);
-            min-width: 170px;
+            min-width: 140px;
+            flex: 1 1 180px;
             outline: none;
             cursor: pointer;
             font-weight: 500;
@@ -189,31 +225,37 @@
             background: var(--dop-red);
             color: white;
             border: none;
-            padding: 9px 18px;
+            padding: 10px 16px;
             border-radius: 6px;
             font-size: 0.9rem;
             font-weight: 600;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
-            transition: background-color 0.2s, transform 0.1s;
+            flex: 1 1 160px;
+            transition: background-color 0.2s;
         }
 
         .btn-print:hover {
             background-color: var(--dop-dark-red);
-            transform: translateY(-1px);
         }
 
         .btn-reset {
             background: #f1f3f5;
             color: var(--text-muted);
             border: 1px solid var(--border-color);
-            padding: 9px 15px;
+            padding: 10px 16px;
             border-radius: 6px;
             font-size: 0.9rem;
             font-weight: 600;
             cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            flex: 1 1 100px;
             transition: all 0.2s;
         }
 
@@ -223,17 +265,19 @@
         }
 
         .stats-badge {
-            margin-left: auto;
-            font-size: 0.9rem;
+            width: 100%;
+            margin-top: 4px;
+            font-size: 0.88rem;
             color: var(--text-muted);
             font-weight: 700;
+            text-align: right;
         }
 
         /* Results List */
         .results-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 16px;
+            gap: 14px;
         }
 
         .card {
@@ -242,18 +286,11 @@
             border: 1px solid var(--border-color);
             box-shadow: 0 2px 4px rgba(0,0,0,0.04);
             overflow: hidden;
-            transition: transform 0.15s ease, box-shadow 0.15s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            border-color: #bbb;
         }
 
         .card-header {
             background: #fafafa;
-            padding: 12px 18px;
+            padding: 12px 14px;
             border-bottom: 1px solid #eee;
             display: flex;
             justify-content: space-between;
@@ -268,17 +305,19 @@
             font-weight: 800;
             padding: 4px 8px;
             border-radius: 4px;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             letter-spacing: 0.5px;
+            white-space: nowrap;
         }
 
         .type-badge {
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             padding: 4px 8px;
             border-radius: 4px;
             color: #fff;
             font-weight: 700;
             text-transform: uppercase;
+            white-space: nowrap;
         }
 
         .type-so { background-color: var(--badge-so); }
@@ -289,23 +328,25 @@
         .card-title-group {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+            flex-wrap: wrap;
         }
 
         .office-name {
-            font-size: 1.15rem;
+            font-size: 1.05rem;
             font-weight: 700;
             color: var(--dop-dark-red);
         }
 
         .parent-so {
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             color: var(--text-muted);
             font-weight: 500;
+            white-space: nowrap;
         }
 
         .card-body {
-            padding: 16px 18px;
+            padding: 12px 14px;
         }
 
         .village-list {
@@ -317,40 +358,85 @@
 
         .village-pill {
             background-color: #f1f3f5;
-            color: #333;
-            padding: 4px 10px;
-            border-radius: 15px;
-            font-size: 0.85rem;
+            color: #222;
+            padding: 5px 10px;
+            border-radius: 14px;
+            font-size: 0.82rem;
+            font-weight: 700;
             border: 1px solid #e2e4e8;
+            line-height: 1.3;
         }
 
         .village-pill.highlight {
             background-color: #fff3cd;
             border-color: #ffe69c;
             color: #856404;
-            font-weight: 800;
+            font-weight: 900;
         }
 
         .empty-state {
             text-align: center;
-            padding: 50px 20px;
+            padding: 40px 16px;
             background: white;
             border-radius: 8px;
             border: 1px dashed #ccc;
         }
 
         .empty-state i {
-            font-size: 3rem;
+            font-size: 2.5rem;
             color: #bbb;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
-        /* Printable Report Header (Hidden in Web View) */
+        .empty-state h3 {
+            font-size: 1.1rem;
+        }
+
+        .empty-state p {
+            font-size: 0.85rem;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 600px) {
+            .brand-title h1 {
+                font-size: 1.15rem;
+            }
+
+            .brand-title p {
+                font-size: 0.75rem;
+            }
+
+            .division-tag {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .filter-select, .btn-print, .btn-reset {
+                flex: 1 1 100%;
+                min-width: 100%;
+            }
+
+            .stats-badge {
+                text-align: center;
+                margin-top: 8px;
+            }
+
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
+
+            .type-badge {
+                align-self: flex-start;
+            }
+        }
+
+        /* Printable Report Header */
         .print-header {
             display: none;
         }
 
-        /* Print Specific CSS */
         @media print {
             body {
                 background-color: #ffffff !important;
@@ -422,11 +508,11 @@
                 border: 1px solid #aaa !important;
                 color: #000 !important;
                 font-size: 8pt !important;
+                font-weight: bold !important;
                 padding: 2px 6px !important;
             }
 
             .village-pill.highlight {
-                font-weight: bold !important;
                 text-decoration: underline !important;
             }
         }
@@ -435,11 +521,11 @@
         footer {
             background: #222;
             color: #aaa;
-            padding: 16px 20px;
-            font-size: 0.8rem;
+            padding: 16px;
+            font-size: 0.78rem;
             text-align: center;
             border-top: 3px solid var(--dop-red);
-            margin-top: 40px;
+            margin-top: 30px;
         }
     </style>
 </head>
@@ -477,8 +563,11 @@
 
         <div class="search-card">
             <div class="search-box-wrapper">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="searchInput" class="search-input" placeholder="Search locality, village, office name, or PIN code (e.g. Gonawa, Hisua, 805110)..." autofocus>
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" id="searchInput" class="search-input" placeholder="Search village, PIN, office..." autofocus>
+                <button type="button" class="voice-btn" id="voiceSearchBtn" title="Voice Search">
+                    <i class="fa-solid fa-microphone"></i>
+                </button>
             </div>
             
             <div class="filters-row">
@@ -499,14 +588,14 @@
                 </select>
 
                 <button class="btn-print" onclick="triggerPrint()">
-                    <i class="fa-solid fa-print"></i> Print Searched List
+                    <i class="fa-solid fa-print"></i> Print Report
                 </button>
 
                 <button class="btn-reset" id="resetBtn">
                     <i class="fa-solid fa-rotate-left"></i> Reset
                 </button>
 
-                <div class="stats-badge" id="statsCount">Showing 0 units</div>
+                <div class="stats-badge" id="statsCount">Ready to search</div>
             </div>
         </div>
 
@@ -528,6 +617,7 @@
         const resultsContainer = document.getElementById('resultsContainer');
         const statsCount = document.getElementById('statsCount');
         const printMeta = document.getElementById('printMeta');
+        const voiceSearchBtn = document.getElementById('voiceSearchBtn');
 
         const uniquePins = [...new Set(directoryData.map(item => item.pin))].filter(p => p).sort();
         uniquePins.forEach(pin => {
@@ -558,13 +648,26 @@
             const selectedSO = soFilter.value;
             const selectedType = typeFilter.value;
 
+            const hasFilter = query !== '' || selectedPin !== '' || selectedSO !== '' || selectedType !== '';
+
+            if (!hasFilter) {
+                statsCount.textContent = 'Ready to search';
+                resultsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <h3>Enter search criteria</h3>
+                        <p style="color: #777; margin-top: 5px;">Type a village/PIN, use mic, or pick a filter above.</p>
+                    </div>
+                `;
+                return;
+            }
+
             const filtered = directoryData.filter(item => {
                 const matchesPin = !selectedPin || item.pin === selectedPin;
                 const matchesSO = !selectedSO || item.parentSO === selectedSO;
                 const matchesType = !selectedType || item.type === selectedType;
 
                 if (!matchesPin || !matchesSO || !matchesType) return false;
-
                 if (!query) return true;
 
                 const nameMatch = item.name.toLowerCase().includes(query);
@@ -577,7 +680,6 @@
 
             statsCount.textContent = `Showing ${filtered.length} unit${filtered.length === 1 ? '' : 's'}`;
 
-            // Update print metadata
             const dateStr = new Date().toLocaleString('en-IN');
             const criteria = [];
             if (query) criteria.push(`Keyword: "${searchInput.value.trim()}"`);
@@ -585,14 +687,14 @@
             if (selectedSO) criteria.push(`SO: ${selectedSO}`);
             if (selectedType) criteria.push(`Type: ${selectedType}`);
             const criteriaStr = criteria.length > 0 ? criteria.join(' | ') : 'All Division Records';
-            printMeta.innerHTML = `Filter Criteria: <strong>${criteriaStr}</strong> &bull; Total Matched: <strong>${filtered.length} Offices/Beats</strong> &bull; Generated: ${dateStr}`;
+            printMeta.innerHTML = `Filter: <strong>${criteriaStr}</strong> &bull; Total: <strong>${filtered.length} Units</strong> &bull; ${dateStr}`;
 
             if (filtered.length === 0) {
                 resultsContainer.innerHTML = `
                     <div class="empty-state">
                         <i class="fa-solid fa-folder-open"></i>
                         <h3>No sorting destinations found</h3>
-                        <p style="color: #777; margin-top: 5px;">Try adjusting your search terms or clearing the filters.</p>
+                        <p style="color: #777; margin-top: 5px;">Try adjusting your keywords or clearing filters.</p>
                     </div>
                 `;
                 return;
@@ -618,8 +720,8 @@
                             <span class="type-badge ${typeClass}">${item.type}</span>
                         </div>
                         <div class="card-body">
-                            <div style="font-size: 0.85rem; font-weight: 600; color: #666; margin-bottom: 6px;">
-                                <i class="fa-solid fa-route"></i> Coverage (${item.villages.length} Localities / Villages / Points):
+                            <div style="font-size: 0.82rem; font-weight: 700; color: #444; margin-bottom: 6px;">
+                                <i class="fa-solid fa-route"></i> Coverage (${item.villages.length} Localities / Villages):
                             </div>
                             <div class="village-list">
                                 ${pills}
@@ -628,6 +730,45 @@
                     </div>
                 `;
             }).join('');
+        }
+
+        // Voice Search Setup (SpeechRecognition)
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (SpeechRecognition) {
+            const recognition = new SpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            recognition.lang = 'en-IN';
+
+            voiceSearchBtn.addEventListener('click', () => {
+                try {
+                    recognition.start();
+                } catch (e) {
+                    recognition.stop();
+                }
+            });
+
+            recognition.onstart = () => {
+                voiceSearchBtn.classList.add('listening');
+                voiceSearchBtn.title = 'Listening... Speak now';
+            };
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                searchInput.value = transcript.replace(/[.,]/g, '');
+                renderResults();
+            };
+
+            recognition.onerror = () => {
+                voiceSearchBtn.classList.remove('listening');
+            };
+
+            recognition.onend = () => {
+                voiceSearchBtn.classList.remove('listening');
+                voiceSearchBtn.title = 'Voice Search';
+            };
+        } else {
+            voiceSearchBtn.style.display = 'none';
         }
 
         function triggerPrint() {
