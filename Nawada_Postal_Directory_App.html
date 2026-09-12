@@ -18,11 +18,18 @@
         .top-nav { background-color: #2b2b2b; color: #ffffff; font-size: 0.78rem; padding: 6px 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px; }
         header { background: linear-gradient(135deg, var(--dop-red) 0%, var(--dop-dark-red) 100%); color: white; padding: 16px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); border-bottom: 5px solid var(--dop-yellow); }
         .header-content { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+        .header-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
         .brand-title { display: flex; align-items: center; gap: 12px; }
         .brand-title .logo-box { background: white; color: var(--dop-red); width: 46px; height: 46px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 22px; box-shadow: 0 2px 5px rgba(0,0,0,0.25); flex-shrink: 0; }
         .brand-title h1 { font-size: 1.3rem; font-weight: 800; letter-spacing: 0.3px; line-height: 1.2; }
         .brand-title p { font-size: 0.8rem; color: #fde4a9; margin-top: 3px; font-weight: 500; }
         .division-tag { background-color: rgba(255, 255, 255, 0.18); border: 1px solid rgba(255, 255, 255, 0.35); padding: 6px 14px; border-radius: 20px; font-size: 0.82rem; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+        
+        /* Blue Quiz Button */
+        .btn-quiz { background-color: #0d6efd; color: #ffffff !important; border: 1px solid #0b5ed7; padding: 7px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s ease; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); }
+        .btn-quiz:hover { background-color: #0b5ed7; transform: translateY(-1px); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25); }
+        .btn-quiz:active { transform: translateY(0); }
+
         .container { max-width: 1200px; margin: 16px auto; padding: 0 12px; flex: 1; width: 100%; }
         
         .search-card { background: var(--card-bg); border-radius: 8px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-top: 4px solid var(--dop-red); margin-bottom: 20px; }
@@ -91,7 +98,9 @@
         @media (max-width: 650px) {
             .brand-title h1 { font-size: 1.15rem; }
             .brand-title p { font-size: 0.75rem; }
-            .division-tag { width: 100%; justify-content: center; }
+            .header-actions { width: 100%; justify-content: flex-start; }
+            .division-tag { flex: 1 1 auto; justify-content: center; }
+            .btn-quiz { flex: 1 1 auto; justify-content: center; }
             .filter-select, .btn-print, .btn-reset, .btn-install { flex: 1 1 100%; min-width: 100%; }
             .stats-badge { text-align: center; margin-top: 8px; }
             .directory-table { font-size: 0.82rem; }
@@ -130,7 +139,12 @@
                     <p>RMS 'PT' Division, Kiul &bull; Nawada and Munger Dn directory</p>
                 </div>
             </div>
-            <div class="division-tag"><i class="fa-solid fa-map-location-dot"></i> Nawada and Munger Dn directory</div>
+            <div class="header-actions">
+                <div class="division-tag"><i class="fa-solid fa-map-location-dot"></i> Nawada and Munger Dn directory</div>
+                <a href="https://shyamal2021.github.io/Sumit_jha_shyam-s_bro/postal_sorting_test_app.html" class="btn-quiz" target="_blank" rel="noopener noreferrer">
+                    <i class="fa-solid fa-circle-question"></i> Quiz
+                </a>
+            </div>
         </div>
     </header>
     <div class="container">
@@ -171,10 +185,7 @@
         <p>&copy; 2026 RMS 'PT' Division, Kiul &bull; Department of Posts &bull; India Post Sorting Network</p>
     </footer>
 
-    
-
     <script>
-
     // Register Service Worker
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
@@ -189,12 +200,8 @@
     const installBtn = document.getElementById('installBtn');
     
     window.addEventListener('beforeinstallprompt', (e) => {
-      // Prevent the default mini-infobar at the bottom
       e.preventDefault();
-      // Stash event for button tap
       deferredPrompt = e;
-      
-      // Show button only when Android is ready to install
       if (installBtn) {
         installBtn.style.display = 'inline-flex';
       }
@@ -203,19 +210,13 @@
     if (installBtn) {
       installBtn.addEventListener('click', async () => {
         if (!deferredPrompt) return;
-    
-        // Trigger native Android 'Add to Home screen' dialog
         deferredPrompt.prompt();
-    
         const { outcome } = await deferredPrompt.userChoice;
         console.log(`User response: ${outcome}`);
-    
-        // Clean up
         deferredPrompt = null;
       });
     }
     
-    // Hide the button once successfully added to home screen
     window.addEventListener('appinstalled', () => {
       if (installBtn) {
         installBtn.style.display = 'none';
@@ -293,7 +294,7 @@
 ["Kowakol SO", "805106", "D Itpakwa BO", "R", "Devan Grah|Itpakwa|Ghoram Bagh|Kolhuabar|Banaili|Banaili Khurd|Haha Pur"],
 ["Kowakol SO", "805106", "Rani Gadar BO", "R", "Ranigadar|Mahuliya Tand|Daniya|Viko|Jharana|Tarma Tand"],
 ["Kowakol SO", "805106", "Mahudar BO", "R", "Mahudar|Mananpur|Gay Ghar|Bhudhi Ghat|Pharki Pathar"],
-["Roh SO", "805141", "Roh SO", "S", "Roh|Muse Pur|Harbans Bigha|Manio  Chak|Shiv Dani Nagar"],
+["Roh SO", "805141", "Roh SO", "S", "Roh|Muse Pur|Harbans Bigha|Manio Chak|Shiv Dani Nagar"],
 ["Roh SO", "805141", "Marara BO", "R", "Marara|Ishe Pur|Ratau|Madhum Pur|Ram Pur"],
 ["Roh SO", "805141", "Rupow BO", "R", "Rupow|Kasmara|Singhana|Patori|Jobana|Bhikham Pur|Mahauli|Benipur|Diaura"],
 ["Roh SO", "805141", "Phuldih BO", "R", "Phuldih|Cahal|Phareda|Pandey Gangaut|Man Sagar|Dip Nagar|Patori|Jogna|Sabada"],
