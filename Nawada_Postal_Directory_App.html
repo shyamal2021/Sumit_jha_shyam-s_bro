@@ -158,7 +158,9 @@
                 </select>
                 <button class="btn-print" onclick="window.print()"><i class="fa-solid fa-print"></i> Print Report</button>
                 <button class="btn-reset" id="resetBtn"><i class="fa-solid fa-rotate-left"></i> Reset</button>
-                <button class="btn-install blinking-btn" id="installBtn"><i class="fa-solid fa-download"></i> Install App</button>
+                <button class="btn-install blinking-btn" id="installBtn" style="display: none;">
+                    <i class="fa-solid fa-download"></i> Install App
+                </button>
                 <div class="stats-badge" id="statsCount">Ready to search</div>
             </div>
         </div>
@@ -173,39 +175,53 @@
 
     <script>
 
-        // Register Service Worker from the static file
-        if ('serviceWorker' in navigator) {
-          window.addEventListener('load', () => {
-            navigator.serviceWorker.register('./sw.js')
-              .then(reg => console.log('SW Registered:', reg.scope))
-              .catch(err => console.error('SW Registration failed:', err));
-          });
-        }
-
-        // Seamless "Install App" mechanism via 'beforeinstallprompt'
-        let deferredPrompt;
-        const installBtn = document.getElementById('installBtn');
-
-        // Capture event silently, then make the install button visible and ready
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-        });
-
-        installBtn.addEventListener('click', async () => {
-            if (deferredPrompt) {
-                // Instantly trigger Chrome's native installation prompt
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    deferredPrompt = null;
-                    installBtn.classList.remove('blinking-btn'); // Stop blinking once installed
-                }
-            } else {
-                // Fallback if PWA criteria aren't met (e.g. running from local file instead of server)
-                alert("Native prompt unavailable (app must be hosted online). To install manually, tap the Chrome menu (⋮) and select 'Add to Home screen'.");
-            }
-        });
+    // Register Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => console.log('SW Registered:', reg.scope))
+          .catch(err => console.error('SW Registration failed:', err));
+      });
+    }
+    
+    // Handle native Android Install Prompt
+    let deferredPrompt = null;
+    const installBtn = document.getElementById('installBtn');
+    
+    window.addEventListener('beforeinstallprompt', (e) => {
+      // Prevent the default mini-infobar at the bottom
+      e.preventDefault();
+      // Stash event for button tap
+      deferredPrompt = e;
+      
+      // Show button only when Android is ready to install
+      if (installBtn) {
+        installBtn.style.display = 'inline-flex';
+      }
+    });
+    
+    if (installBtn) {
+      installBtn.addEventListener('click', async () => {
+        if (!deferredPrompt) return;
+    
+        // Trigger native Android 'Add to Home screen' dialog
+        deferredPrompt.prompt();
+    
+        const { outcome } = await deferredPrompt.userChoice;
+        console.log(`User response: ${outcome}`);
+    
+        // Clean up
+        deferredPrompt = null;
+      });
+    }
+    
+    // Hide the button once successfully added to home screen
+    window.addEventListener('appinstalled', () => {
+      if (installBtn) {
+        installBtn.style.display = 'none';
+      }
+      deferredPrompt = null;
+    });
 
         let rawData = [
 ["Nawada HO", "805110", "BEAT", "B", "Hospital Road|Sadar Hospital|Gola Road|Kadam Kuwan|Sonarpatti|Sbi Bazar Branch|Indra Chowk|Station Road|Malgodam|Professor Colony|Chhaya Road|Thatheri Gali|Kanhai Nagar|Kanhai High School|3 N0. Bus Stand|Gandhi Nagar|Mirzapur|Nehaluchak|Sidheshwarpur|Kls College|Koniyapar|Surya Mandir|Nanoura Road|Union Bank|Central Bank|Nawada Ho|Main Road|Prajatantra Chowk|Lal Chowk|Vijay Bazar|Sabji Bazar|Purani Bazar|Old Court Road|Sdo Office|Zila Parishad|Nagar Parishad|Registary Office|Central Bank|Sbi Main Branch|Garh Par|Kalali Road|Nardiganj Road|Muslim Road|Rmw College|Phal Gali|Skm College|New Area|Patal Puri|Nutraj Cinema|Old Jail Road|Prasad Bigha|Canara Bank|Pnb Bank|Idbi Bank|Collectoriate|Deo Nawada|Project Girl School|Abhyash Middle School|Navin Nagar|Shiv Nagar|Patel Nagar|Postmartem Road|Harschandra Stadium Road|Govardhan Mandir|Yadav Chowk|Jawahar Nagar|Town Thana Road|Mangarbigha|Bank Of India|Bank Of Baroda|Lic Office|Sahara Office|Bajaz Alliance Office|Uco Bank|Dbgb|Mahila Thana|Sc/St Thana|Rlsy College|Honda Show Room|Icici Bank|Hdfc Bank|Agrawal Petrol Pump|Sastri Nagar|Gopal Nagar|S.P Kothi|D.M Kothi|Hero Showroom|Block Office Nawada|Block Colony|Sbi Adb|Ram Nagar|Rajendra Nagar|Yamuna Path|Chaurasiya Colony|Hanuman Nagar|Gandhi School|Co-Operative Bank|Indian Bank|Bsnl Office"],
