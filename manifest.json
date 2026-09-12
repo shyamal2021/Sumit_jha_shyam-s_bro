@@ -1,0 +1,23 @@
+{
+  "name": "Kiul RMS Sorting list finder",
+  "short_name": "RMS Finder",
+  "start_url": "./Nawada_Postal_Directory_App.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f6f9",
+  "theme_color": "#c4122f",
+  "icons": [
+    {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/India_Post_Logo.svg/512px-India_Post_Logo.svg.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/India_Post_Logo.svg/192px-India_Post_Logo.svg.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
