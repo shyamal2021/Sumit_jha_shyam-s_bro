@@ -7,7 +7,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
     <!-- PWA Manifest for Add to Home Screen -->
-    <link rel="manifest" id="manifest-placeholder">
+    <link rel="manifest" href="./manifest.json">
     <meta name="theme-color" content="#c4122f">
     <link rel="apple-touch-icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/India_Post_Logo.svg/512px-India_Post_Logo.svg.png">
 
@@ -172,37 +172,14 @@
     
 
     <script>
-        // Generating a dynamic PWA manifest to allow app installation
-        const manifest = {
-            "name": "Kiul RMS Sorting Finder",
-            "short_name": "Kiul RMS",
-            "start_url": ".",
-            "display": "standalone",
-            "background_color": "#f4f6f9",
-            "theme_color": "#c4122f",
-            "icons": [
-                {
-                    "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/India_Post_Logo.svg/512px-India_Post_Logo.svg.png",
-                    "sizes": "512x512",
-                    "type": "image/png"
-                }
-            ]
-        };
-        const manifestBlob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
-        document.getElementById('manifest-placeholder').href = URL.createObjectURL(manifestBlob);
 
-        // Service Worker setup to satisfy Chrome's offline capability requirements natively
+        // Register Service Worker from the static file
         if ('serviceWorker' in navigator) {
-            const swCode = `
-                self.addEventListener('install', (e) => {
-                    self.skipWaiting();
-                });
-                self.addEventListener('fetch', (e) => {
-                    // Dummy fetch listener to satisfy PWA criteria natively
-                });
-            `;
-            const swBlob = new Blob([swCode], {type: 'application/javascript'});
-            navigator.serviceWorker.register(URL.createObjectURL(swBlob));
+          window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js')
+              .then(reg => console.log('SW Registered:', reg.scope))
+              .catch(err => console.error('SW Registration failed:', err));
+          });
         }
 
         // Seamless "Install App" mechanism via 'beforeinstallprompt'
